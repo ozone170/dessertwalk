@@ -1,0 +1,31 @@
+{
+  "name": "dessert-walk",
+  "version": "1.0.0",
+  "description": "Full-stack dessert shop application with Next.js frontend and Node.js backend",
+  "scripts": {
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "install:all": "npm run install:backend && npm run install:frontend",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "seed": "cd backend && npm run seed",
+    "start:backend": "cd backend && npm start",
+    "start:frontend": "cd frontend && npm start",
+    "build:frontend": "cd frontend && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ozone170/dessertwalk.git"
+  },
+  "keywords": [
+    "dessert",
+    "bakery",
+    "nextjs",
+    "nodejs",
+    "mongodb",
+    "restaurant",
+    "food"
+  ],
+  "author": "Dessert Walk",
+  "license": "MIT"
+}
