@@ -1,18 +1,37 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ItemCard from '@/components/ItemCard';
 import ItemDetailModal from '@/components/ItemDetailModal';
 import { apiService } from '@/services/api';
 
-export default function ItemsPage() {
-  const [items, setItems] = useState([]);
-  const [categories, setCategories] = useState([]);
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+}
+
+interface Item {
+  _id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  price: number;
+  categoryId: {
+    _id: string;
+    name: string;
+    slug: string;
+  };
+}
+
+function ItemsContent() {
+  const [items, setItems] = useState<Item[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredItems, setFilteredItems] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [filteredItems, setFilteredItems] = useState<Item[]>([]);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const searchParams = useSearchParams();
 
@@ -44,11 +63,11 @@ export default function ItemsPage() {
     let filtered = items;
 
     if (selectedCategory) {
-      filtered = filtered.filter((item: any) => item.categoryId._id === selectedCategory);
+      filtered = filtered.filter((item: Item) => item.categoryId._id === selectedCategory);
     }
 
     if (searchTerm) {
-      filtered = filtered.filter((item: any) =>
+      filtered = filtered.filter((item: Item) =>
         item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
@@ -57,7 +76,7 @@ export default function ItemsPage() {
     setFilteredItems(filtered);
   }, [items, selectedCategory, searchTerm]);
 
-  const handleItemClick = (item: any) => {
+  const handleItemClick = (item: Item) => {
     setSelectedItem(item);
     setIsModalOpen(true);
   };
@@ -67,9 +86,9 @@ export default function ItemsPage() {
     setSelectedItem(null);
   };
 
-  const getSelectedCategoryName = () => {
+  const getSelectedCategoryName = (): string => {
     if (!selectedCategory) return 'All Items';
-    const category = categories.find((cat: any) => cat._id === selectedCategory);
+    const category = categories.find((cat: Category) => cat._id === selectedCategory);
     return category ? category.name : 'All Items';
   };
 
@@ -112,7 +131,7 @@ export default function ItemsPage() {
             >
               All Items
             </button>
-            {categories.map((category: any) => (
+            {categories.map((category: Category) => (
               <button
                 key={category._id}
                 onClick={() => setSelectedCategory(category._id)}
@@ -143,7 +162,7 @@ export default function ItemsPage() {
 
         {/* Items Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredItems.map((item: any) => (
+          {filteredItems.map((item: Item) => (
             <ItemCard 
               key={item._id} 
               item={item} 
@@ -186,5 +205,22 @@ export default function ItemsPage() {
         onClose={closeModal}
       />
     </div>
+  );
+}
+
+export default function ItemsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen py-8 bg-gradient-to-b from-orange-50 to-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Our Menu</h1>
+            <p className="text-lg text-gray-600">Loading...</p>
+          </div>
+        </div>
+      </div>
+    }>
+      <ItemsContent />
+    </Suspense>
   );
 }

@@ -3,6 +3,12 @@
 import { useState, useEffect } from 'react';
 import { apiService } from '@/services/api';
 
+interface Item {
+  _id: string;
+  name: string;
+  price: number;
+}
+
 export default function EnquiryPage() {
   const [formData, setFormData] = useState({
     name: '',
@@ -11,7 +17,7 @@ export default function EnquiryPage() {
     message: '',
     itemId: ''
   });
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<Item[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -166,7 +172,7 @@ export default function EnquiryPage() {
                   className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
                 >
                   <option value="">Select an item...</option>
-                  {items.map((item: any) => (
+                  {items.map((item: Item) => (
                     <option key={item._id} value={item._id}>
                       {item.name} - ${item.price}
                     </option>

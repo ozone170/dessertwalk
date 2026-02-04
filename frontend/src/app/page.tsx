@@ -7,10 +7,29 @@ import ItemCard from '@/components/ItemCard';
 import ItemDetailModal from '@/components/ItemDetailModal';
 import { apiService } from '@/services/api';
 
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+}
+
+interface Item {
+  _id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  price: number;
+  categoryId: {
+    _id: string;
+    name: string;
+    slug: string;
+  };
+}
+
 export default function Home() {
-  const [categories, setCategories] = useState([]);
-  const [featuredItems, setFeaturedItems] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [featuredItems, setFeaturedItems] = useState<Item[]>([]);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
@@ -35,7 +54,7 @@ export default function Home() {
     router.push(`/items?category=${categoryId}`);
   };
 
-  const handleItemClick = (item: any) => {
+  const handleItemClick = (item: Item) => {
     setSelectedItem(item);
     setIsModalOpen(true);
   };
@@ -59,7 +78,7 @@ export default function Home() {
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {categories.map((category: any) => (
+            {categories.map((category: Category) => (
               <div 
                 key={category._id} 
                 className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer group"
@@ -90,7 +109,7 @@ export default function Home() {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {featuredItems.map((item: any) => (
+            {featuredItems.map((item: Item) => (
               <ItemCard 
                 key={item._id} 
                 item={item} 
