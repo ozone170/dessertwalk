@@ -203,6 +203,50 @@ The application comes with pre-populated sample data:
 
 ## 🚀 Deployment
 
+### 🐳 Docker Deployment (Backend)
+The backend is Docker-ready for cloud deployment:
+
+```bash
+cd backend
+docker build -t dessert-walk-backend .
+docker run -p 5000:5000 --env-file .env dessert-walk-backend
+```
+
+### ☁️ Cloud Deployment Options
+
+**Backend (Hugging Face Spaces)**
+- Dockerfile included for containerized deployment
+- Environment variables: `MONGO_URI`, `JWT_SECRET`, `PORT`
+- Health check endpoint: `/health`
+- CORS configured for Vercel frontend
+
+**Frontend (Vercel)**
+- Optimized for Vercel deployment
+- Environment variables for API endpoints
+- Static generation for optimal performance
+
+### 🔧 Environment Variables
+
+**Backend (.env)**
+```env
+MONGO_URI=your-mongodb-connection-string
+JWT_SECRET=your-jwt-secret-key
+PORT=5000
+```
+
+**Frontend (.env.local)**
+```env
+NEXT_PUBLIC_API_URL=your-backend-api-url
+```
+
+### 📋 Deployment Checklist
+- ✅ Docker configuration ready
+- ✅ Cloud-ready port configuration
+- ✅ CORS configured for production
+- ✅ Environment variables documented
+- ✅ Health check endpoint available
+- ✅ Production build tested
+
 ### Local Development
 - Frontend: `http://localhost:3000`
 - Backend: `http://localhost:5000`
