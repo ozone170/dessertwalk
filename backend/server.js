@@ -22,18 +22,33 @@ app.use('/api/items', require('./routes/items'));
 app.use('/api/categories', require('./routes/categories'));
 app.use('/api/enquiries', require('./routes/enquiries'));
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', message: 'Server is running' });
+// Root health endpoint (CRITICAL)
+app.get('/', (req, res) => {
+  res.json({
+    status: 'OK',
+    message: 'Dessert Walk Backend is running'
+  });
 });
 
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
-
-// Cloud-ready port configuration
+// Start HTTP server IMMEDIATELY
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
+  console.log('Environment check:');
+  console.log('- MONGO_URI:', process.env.MONGO_URI ? 'Set' : 'Not set');
+  console.log('- JWT_SECRET:', process.env.JWT_SECRET ? 'Set' : 'Not set');
 });
+
+// Connect Mongo in background
+console.log('Attempting to connect to MongoDB...');
+console.log('MONGO_URI exists:', !!process.env.MONGO_URI);
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log('MongoDB connected successfully');
+    console.log('Database name:', mongoose.connection.name);
+  })
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    console.error('App will keep running without DB');
+  });
