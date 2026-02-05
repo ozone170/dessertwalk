@@ -38,7 +38,7 @@ export default function Footer() {
                 <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <span>info@dessertwalk.com</span>
+                <span>desertwalk170@gmail.com</span>
               </div>
               <div className="flex items-center space-x-3">
                 <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,6 +57,35 @@ export default function Footer() {
               <a href="/items" className="block text-gray-300 hover:text-amber-400 transition-colors">Menu</a>
               <a href="/about" className="block text-gray-300 hover:text-amber-400 transition-colors">About Us</a>
               <a href="/enquiry" className="block text-gray-300 hover:text-amber-400 transition-colors">Order Now</a>
+            </div>
+          </div>
+        </div>
+
+        {/* Location Map Section */}
+        <div className="mt-12 pt-8 border-t border-gray-700">
+          <div className="text-center mb-8">
+            <h4 className="text-2xl font-bold text-amber-400 mb-2">Find Us Here</h4>
+            <p className="text-gray-300">Visit our store at Mujawar Arcade, Belgaum</p>
+          </div>
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              <div className="relative rounded-xl overflow-hidden shadow-2xl">
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d473.91583815179337!2d74.5164185864923!3d15.880944198659249!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbf614eae323983%3A0x2ca069a31d9e3f09!2sMUJAWAR%20ARCADE!5e1!3m2!1sen!2sin!4v1770277459584!5m2!1sen!2sin" 
+                  width="100%" 
+                  height="300" 
+                  style={{ border: 0 }} 
+                  allowFullScreen 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full h-64 md:h-80"
+                />
+              </div>
+              <div className="mt-4 text-center">
+                <p className="text-gray-400 text-sm">
+                  <span className="text-amber-400 font-semibold">Address:</span> Mujawar Arcade, Beside KLE'S Dental College, Belgaum
+                </p>
+              </div>
             </div>
           </div>
         </div>
