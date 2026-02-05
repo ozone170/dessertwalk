@@ -14,6 +14,7 @@ interface Enquiry {
     _id: string;
     name: string;
   };
+  referenceImageUrl?: string;
   status: 'new' | 'contacted' | 'resolved';
   createdAt: string;
 }
@@ -149,6 +150,9 @@ export default function AdminEnquiries() {
                         Message
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Reference Image
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Status
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -178,6 +182,31 @@ export default function AdminEnquiries() {
                           <div className="text-sm text-gray-900 max-w-xs truncate">
                             {enquiry.message}
                           </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {enquiry.referenceImageUrl ? (
+                            <div className="flex items-center space-x-2">
+                              <img 
+                                src={enquiry.referenceImageUrl} 
+                                alt="Reference" 
+                                className="w-12 h-12 object-cover rounded-lg"
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.style.display = 'none';
+                                }}
+                              />
+                              <a 
+                                href={enquiry.referenceImageUrl} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:text-blue-800 text-xs"
+                              >
+                                View Full
+                              </a>
+                            </div>
+                          ) : (
+                            <span className="text-gray-400 text-sm">No image</span>
+                          )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(enquiry.status)}`}>

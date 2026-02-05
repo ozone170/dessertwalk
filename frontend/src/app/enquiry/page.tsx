@@ -15,7 +15,8 @@ export default function EnquiryPage() {
     phone: '',
     email: '',
     message: '',
-    itemId: ''
+    itemId: '',
+    referenceImageUrl: ''
   });
   const [items, setItems] = useState<Item[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,7 +54,8 @@ export default function EnquiryPage() {
         phone: '',
         email: '',
         message: '',
-        itemId: ''
+        itemId: '',
+        referenceImageUrl: ''
       });
       
       // Hide success message after 5 seconds
@@ -181,6 +183,24 @@ export default function EnquiryPage() {
               </div>
 
               <div>
+                <label htmlFor="referenceImageUrl" className="block text-sm font-semibold text-gray-700 mb-2">
+                  Reference Image URL (Optional)
+                </label>
+                <input
+                  type="url"
+                  id="referenceImageUrl"
+                  name="referenceImageUrl"
+                  value={formData.referenceImageUrl}
+                  onChange={handleChange}
+                  className="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
+                  placeholder="https://example.com/image.jpg"
+                />
+                <p className="text-sm text-gray-500 mt-2">
+                  Share a reference image to help us understand your vision better. Supported formats: JPG, PNG, GIF, WebP
+                </p>
+              </div>
+
+              <div>
                 <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
                   Message *
                 </label>
@@ -242,7 +262,7 @@ export default function EnquiryPage() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-800">Email</h4>
-                    <p className="text-gray-600">info@dessertwalk.com</p>
+                    <p className="text-gray-600">desertwalk170@gmail.com</p>
                     <p className="text-sm text-gray-500">We reply within 24 hours</p>
                   </div>
                 </div>
