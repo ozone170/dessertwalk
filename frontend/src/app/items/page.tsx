@@ -42,9 +42,14 @@ function ItemsContent() {
           apiService.getItems(),
           apiService.getCategories()
         ]);
-        setItems(itemsData);
-        setCategories(categoriesData);
-        setFilteredItems(itemsData);
+        
+        // Ensure we always have arrays, even if API returns something else
+        const safeItemsData = Array.isArray(itemsData) ? itemsData : [];
+        const safeCategoriesData = Array.isArray(categoriesData) ? categoriesData : [];
+        
+        setItems(safeItemsData);
+        setCategories(safeCategoriesData);
+        setFilteredItems(safeItemsData);
 
         // Check if there's a category parameter in the URL
         const categoryParam = searchParams.get('category');
@@ -53,6 +58,10 @@ function ItemsContent() {
         }
       } catch (error) {
         console.error('Error fetching data:', error);
+        // Set empty arrays on error to prevent map errors
+        setItems([]);
+        setCategories([]);
+        setFilteredItems([]);
       }
     };
 

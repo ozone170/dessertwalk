@@ -7,6 +7,7 @@ const router = express.Router();
 // Get all items with optional filters
 router.get('/', async (req, res) => {
   try {
+    console.log('Fetching items with query:', req.query);
     const { category, featured } = req.query;
     let filter = {};
     
@@ -18,10 +19,13 @@ router.get('/', async (req, res) => {
       filter.isFeatured = true;
     }
 
+    console.log('Items filter:', filter);
     const items = await Item.find(filter).populate('categoryId', 'name slug');
+    console.log('Items found:', items.length);
     res.json(items);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Items route error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 

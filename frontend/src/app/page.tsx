@@ -40,10 +40,15 @@ export default function Home() {
           apiService.getCategories(),
           apiService.getItems({ featured: true })
         ]);
-        setCategories(categoriesData);
-        setFeaturedItems(itemsData);
+        
+        // Ensure we always have arrays, even if API returns something else
+        setCategories(Array.isArray(categoriesData) ? categoriesData : []);
+        setFeaturedItems(Array.isArray(itemsData) ? itemsData : []);
       } catch (error) {
         console.error('Error fetching data:', error);
+        // Set empty arrays on error to prevent map errors
+        setCategories([]);
+        setFeaturedItems([]);
       }
     };
 
