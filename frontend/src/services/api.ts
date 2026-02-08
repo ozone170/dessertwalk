@@ -9,6 +9,14 @@ class ApiService {
     };
   }
 
+  private async handleResponse(response: Response) {
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: 'Request failed' }));
+      throw new Error(error.message || `HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  }
+
   // Auth
   async login(email: string, password: string) {
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
@@ -16,13 +24,19 @@ class ApiService {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
-    return response.json();
+    return this.handleResponse(response);
   }
 
   // Categories
   async getCategories() {
-    const response = await fetch(`${API_BASE_URL}/categories`);
-    return response.json();
+    try {
+      const response = await fetch(`${API_BASE_URL}/categories`);
+      const data = await this.handleResponse(response);
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      return [];
+    }
   }
 
   async createCategory(data: { name: string; slug: string }) {
@@ -31,7 +45,7 @@ class ApiService {
       headers: this.getAuthHeaders(),
       body: JSON.stringify(data)
     });
-    return response.json();
+    return this.handleResponse(response);
   }
 
   async updateCategory(id: string, data: { name: string; slug: string }) {
@@ -40,7 +54,7 @@ class ApiService {
       headers: this.getAuthHeaders(),
       body: JSON.stringify(data)
     });
-    return response.json();
+    return this.handleResponse(response);
   }
 
   async deleteCategory(id: string) {
@@ -48,17 +62,23 @@ class ApiService {
       method: 'DELETE',
       headers: this.getAuthHeaders()
     });
-    return response.json();
+    return this.handleResponse(response);
   }
 
   // Items
   async getItems(params?: { category?: string; featured?: boolean }) {
-    const searchParams = new URLSearchParams();
-    if (params?.category) searchParams.append('category', params.category);
-    if (params?.featured) searchParams.append('featured', 'true');
-    
-    const response = await fetch(`${API_BASE_URL}/items?${searchParams}`);
-    return response.json();
+    try {
+      const searchParams = new URLSearchParams();
+      if (params?.category) searchParams.append('category', params.category);
+      if (params?.featured) searchParams.append('featured', 'true');
+      
+      const response = await fetch(`${API_BASE_URL}/items?${searchParams}`);
+      const data = await this.handleResponse(response);
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error('Error fetching items:', error);
+      return [];
+    }
   }
 
   async createItem(data: any) {
@@ -67,7 +87,7 @@ class ApiService {
       headers: this.getAuthHeaders(),
       body: JSON.stringify(data)
     });
-    return response.json();
+    return this.handleResponse(response);
   }
 
   async updateItem(id: string, data: any) {
@@ -76,7 +96,7 @@ class ApiService {
       headers: this.getAuthHeaders(),
       body: JSON.stringify(data)
     });
-    return response.json();
+    return this.handleResponse(response);
   }
 
   async deleteItem(id: string) {
@@ -84,7 +104,7 @@ class ApiService {
       method: 'DELETE',
       headers: this.getAuthHeaders()
     });
-    return response.json();
+    return this.handleResponse(response);
   }
 
   // Enquiries
@@ -94,14 +114,20 @@ class ApiService {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-    return response.json();
+    return this.handleResponse(response);
   }
 
   async getEnquiries() {
-    const response = await fetch(`${API_BASE_URL}/enquiries`, {
-      headers: this.getAuthHeaders()
-    });
-    return response.json();
+    try {
+      const response = await fetch(`${API_BASE_URL}/enquiries`, {
+        headers: this.getAuthHeaders()
+      });
+      const data = await this.handleResponse(response);
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.error('Error fetching enquiries:', error);
+      return [];
+    }
   }
 
   async updateEnquiryStatus(id: string, status: string) {
@@ -110,7 +136,7 @@ class ApiService {
       headers: this.getAuthHeaders(),
       body: JSON.stringify({ status })
     });
-    return response.json();
+    return this.handleResponse(response);
   }
 
   async deleteEnquiry(id: string) {
@@ -118,7 +144,7 @@ class ApiService {
       method: 'DELETE',
       headers: this.getAuthHeaders()
     });
-    return response.json();
+    return this.handleResponse(response);
   }
 }
 
