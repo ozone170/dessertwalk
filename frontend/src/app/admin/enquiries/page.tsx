@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import AdminHeader from '@/components/AdminHeader';
+import AdminNav from '@/components/AdminNav';
 import { apiService } from '@/services/api';
 
 interface Enquiry {
@@ -30,9 +32,10 @@ export default function AdminEnquiries() {
   const fetchEnquiries = async () => {
     try {
       const data = await apiService.getEnquiries();
-      setEnquiries(data);
+      setEnquiries(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching enquiries:', error);
+      setEnquiries([]);
     } finally {
       setLoading(false);
     }
@@ -87,39 +90,13 @@ export default function AdminEnquiries() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <div className="bg-white shadow">
-          <div className="max-w-7xl mx-auto px-4 py-4">
-            <div className="flex justify-between items-center">
-              <h1 className="text-2xl font-bold text-gray-900">Enquiries Management</h1>
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
+      <div className="min-h-screen bg-gray-50/50">
+        <AdminHeader title="Enquiries Management" />
 
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Navigation */}
           <div className="mb-8">
-            <nav className="flex space-x-4">
-              <a href="/admin/dashboard" className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
-                Dashboard
-              </a>
-              <a href="/admin/enquiries" className="bg-pink-600 text-white px-4 py-2 rounded">
-                Enquiries
-              </a>
-              <a href="/admin/items" className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
-                Items
-              </a>
-              <a href="/admin/categories" className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
-                Categories
-              </a>
-            </nav>
+            <AdminNav currentPage="enquiries" />
           </div>
 
           {/* Enquiries Table */}
@@ -127,7 +104,7 @@ export default function AdminEnquiries() {
             <div className="px-6 py-4 border-b border-gray-200">
               <h2 className="text-lg font-semibold">All Enquiries ({enquiries.length})</h2>
             </div>
-            
+
             {enquiries.length === 0 ? (
               <div className="p-6 text-center text-gray-500">
                 No enquiries found.
@@ -186,18 +163,18 @@ export default function AdminEnquiries() {
                         <td className="px-6 py-4 whitespace-nowrap">
                           {enquiry.referenceImageUrl ? (
                             <div className="flex items-center space-x-2">
-                              <img 
-                                src={enquiry.referenceImageUrl} 
-                                alt="Reference" 
+                              <img
+                                src={enquiry.referenceImageUrl}
+                                alt="Reference"
                                 className="w-12 h-12 object-cover rounded-lg"
                                 onError={(e) => {
                                   const target = e.target as HTMLImageElement;
                                   target.style.display = 'none';
                                 }}
                               />
-                              <a 
-                                href={enquiry.referenceImageUrl} 
-                                target="_blank" 
+                              <a
+                                href={enquiry.referenceImageUrl}
+                                target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-blue-600 hover:text-blue-800 text-xs"
                               >

@@ -23,21 +23,25 @@ export default function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      const [enquiries, items, categories] = await Promise.all([
+      const [enquiriesData, itemsData, categoriesData] = await Promise.all([
         apiService.getEnquiries(),
         apiService.getItems(),
         apiService.getCategories()
       ]);
-      
+
+      const enquiries = Array.isArray(enquiriesData) ? enquiriesData : [];
+      const items = Array.isArray(itemsData) ? itemsData : [];
+      const categories = Array.isArray(categoriesData) ? categoriesData : [];
+
       const newEnquiries = enquiries.filter((enquiry: any) => enquiry.status === 'new').length;
-      const featuredItems = items.filter((item: any) => item.isFeatured).length;
-      
+      const featuredItemsCount = items.filter((item: any) => item.isFeatured).length;
+
       setStats({
         totalEnquiries: enquiries.length,
         newEnquiries,
         totalItems: items.length,
         totalCategories: categories.length,
-        featuredItems
+        featuredItems: featuredItemsCount
       });
 
       // Get recent enquiries (last 5)
@@ -64,7 +68,7 @@ export default function AdminDashboard() {
       <div className="min-h-screen bg-gray-50">
         <AdminHeader title="Admin Dashboard" />
 
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Navigation */}
           <div className="mb-8">
             <AdminNav currentPage="dashboard" />
@@ -140,11 +144,10 @@ export default function AdminDashboard() {
                             {enquiry.message}
                           </p>
                         </div>
-                        <span className={`text-xs px-2 py-1 rounded ${
-                          enquiry.status === 'new' ? 'bg-red-100 text-red-800' :
-                          enquiry.status === 'contacted' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-green-100 text-green-800'
-                        }`}>
+                        <span className={`text-xs px-2 py-1 rounded ${enquiry.status === 'new' ? 'bg-red-100 text-red-800' :
+                            enquiry.status === 'contacted' ? 'bg-yellow-100 text-yellow-800' :
+                              'bg-green-100 text-green-800'
+                          }`}>
                           {enquiry.status}
                         </span>
                       </div>
