@@ -10,8 +10,8 @@ export default function AdminHeader({ title }: AdminHeaderProps) {
   };
 
   return (
-    <div className="bg-white shadow">
-      <div className="max-w-7xl mx-auto px-4 py-4">
+    <div className="bg-white shadow-sm sticky top-0 z-40">
+      <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
           <div className="flex items-center space-x-4">

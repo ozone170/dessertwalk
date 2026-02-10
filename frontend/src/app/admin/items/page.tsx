@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import AdminHeader from '@/components/AdminHeader';
+import AdminNav from '@/components/AdminNav';
 import { apiService } from '@/services/api';
 
 interface Item {
@@ -49,10 +51,12 @@ export default function AdminItems() {
         apiService.getItems(),
         apiService.getCategories()
       ]);
-      setItems(itemsData);
-      setCategories(categoriesData);
+      setItems(Array.isArray(itemsData) ? itemsData : []);
+      setCategories(Array.isArray(categoriesData) ? categoriesData : []);
     } catch (error) {
       console.error('Error fetching data:', error);
+      setItems([]);
+      setCategories([]);
     } finally {
       setLoading(false);
     }
@@ -130,39 +134,13 @@ export default function AdminItems() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <div className="bg-white shadow">
-          <div className="max-w-7xl mx-auto px-4 py-4">
-            <div className="flex justify-between items-center">
-              <h1 className="text-2xl font-bold text-gray-900">Items Management</h1>
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
+      <div className="min-h-screen bg-gray-50/50">
+        <AdminHeader title="Items Management" />
 
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Navigation */}
           <div className="mb-8">
-            <nav className="flex space-x-4">
-              <a href="/admin/dashboard" className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
-                Dashboard
-              </a>
-              <a href="/admin/enquiries" className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
-                Enquiries
-              </a>
-              <a href="/admin/items" className="bg-pink-600 text-white px-4 py-2 rounded">
-                Items
-              </a>
-              <a href="/admin/categories" className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
-                Categories
-              </a>
-            </nav>
+            <AdminNav currentPage="items" />
           </div>
 
           {/* Add Item Button */}
@@ -189,7 +167,7 @@ export default function AdminItems() {
                       <input
                         type="text"
                         value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         required
                         className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
                       />
@@ -198,7 +176,7 @@ export default function AdminItems() {
                       <label className="block text-sm font-medium text-gray-700">Description</label>
                       <textarea
                         value={formData.description}
-                        onChange={(e) => setFormData({...formData, description: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         required
                         rows={3}
                         className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
@@ -208,7 +186,7 @@ export default function AdminItems() {
                       <label className="block text-sm font-medium text-gray-700">Category</label>
                       <select
                         value={formData.categoryId}
-                        onChange={(e) => setFormData({...formData, categoryId: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
                         required
                         className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
                       >
@@ -225,20 +203,20 @@ export default function AdminItems() {
                       <input
                         type="url"
                         value={formData.imageUrl}
-                        onChange={(e) => setFormData({...formData, imageUrl: e.target.value})}
+                        onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                         required
                         placeholder="https://images.unsplash.com/..."
                         className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Price ($)</label>
+                      <label className="block text-sm font-medium text-gray-700">Price (₹)</label>
                       <input
                         type="number"
                         step="0.01"
                         min="0"
                         value={formData.price}
-                        onChange={(e) => setFormData({...formData, price: parseFloat(e.target.value) || 0})}
+                        onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
                         required
                         placeholder="0.00"
                         className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
@@ -249,7 +227,7 @@ export default function AdminItems() {
                         type="checkbox"
                         id="featured"
                         checked={formData.isFeatured}
-                        onChange={(e) => setFormData({...formData, isFeatured: e.target.checked})}
+                        onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })}
                         className="mr-2"
                       />
                       <label htmlFor="featured" className="text-sm font-medium text-gray-700">
@@ -290,7 +268,7 @@ export default function AdminItems() {
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="text-lg font-semibold">{item.name}</h3>
                     <div className="flex flex-col items-end">
-                      <span className="text-lg font-bold text-green-600">${item.price}</span>
+                      <span className="text-lg font-bold text-green-600">₹{item.price}</span>
                       {item.isFeatured && (
                         <span className="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded mt-1">
                           Featured

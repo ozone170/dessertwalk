@@ -2,48 +2,87 @@ import Link from 'next/link';
 
 export default function Hero() {
   return (
-    <div className="relative min-h-[70vh] bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 flex items-center justify-center overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
+    <div className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-background">
+
+      {/* ================= BACKGROUND IMAGE ================= */}
+      <div
+        className="absolute inset-0 z-0 bg-cover bg-center"
+        style={{
+          backgroundImage: "url('/home_page.png')",
+        }}
+      />
+
+      {/* ================= GRADIENT + EFFECT OVERLAY ================= */}
+      <div className="absolute inset-0 z-0 opacity-40">
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-200/40 via-transparent to-rose-200/40" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-pink-500/20 via-transparent to-transparent opacity-50" />
+
+        {/* Abstract Shapes */}
+        <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-pink-200/40 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-rose-100/40 blur-[100px] rounded-full" />
       </div>
-      
-      <div className="relative text-center text-white px-4 max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-          Welcome to{' '}
-          <span className="bg-gradient-to-r from-yellow-200 to-orange-200 bg-clip-text text-transparent">
-            Dessert Walk
+
+      {/* ================= CONTENT ================= */}
+      <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
+        <div className="inline-block mb-6 px-4 py-1.5 rounded-full glass-effect text-primary text-sm font-bold tracking-wider uppercase animate-fade-up">
+          Artisanal & Handcrafted
+        </div>
+
+        <h1
+          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-[1.1] tracking-tight text-foreground animate-fade-up"
+          style={{ animationDelay: '0.1s' }}
+        >
+          Indulge in <br className="hidden md:block" />
+          <span className="bg-gradient-to-r from-pink-600 via-rose-600 to-pink-400 bg-clip-text text-transparent">
+            Pure Sweetness
           </span>
         </h1>
-        <p className="text-xl md:text-2xl lg:text-3xl mb-8 font-light opacity-90">
-          Indulge in our delicious handcrafted desserts
+
+        <p
+          className="text-lg md:text-2xl mb-12 text-foreground/70 max-w-2xl mx-auto leading-relaxed animate-fade-up"
+          style={{ animationDelay: '0.2s' }}
+        >
+          From decadent tiered cakes to artisanal morning pastries, discover the magic in every handcrafted bite.
         </p>
-        <p className="text-lg md:text-xl mb-10 opacity-80 max-w-2xl mx-auto">
-          From decadent cakes to artisanal pastries, every bite tells a story of passion and perfection
-        </p>
-        
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Link 
+
+        <div
+          className="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-up"
+          style={{ animationDelay: '0.3s' }}
+        >
+          <Link
             href="/items"
-            className="bg-white text-orange-600 px-8 py-4 rounded-full text-lg font-bold hover:bg-gray-100 transition-all shadow-lg transform hover:scale-105"
+            className="group relative bg-primary hover:bg-primary-hover text-white px-10 py-5 rounded-2xl text-lg font-bold transition-all shadow-2xl overflow-hidden active:scale-95"
           >
-            Explore Menu
+            <span className="relative z-10 flex items-center gap-2">
+              Explore Menu
+              <svg
+                className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </span>
+            <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
           </Link>
-          <Link 
+
+          <Link
             href="/enquiry"
-            className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-white hover:text-orange-600 transition-all"
+            className="glass-effect text-foreground px-10 py-5 rounded-2xl text-lg font-bold hover:bg-white hover:text-primary transition-all active:scale-95 shadow-sm"
           >
-            Make an Enquiry
+            Custom Order
           </Link>
         </div>
       </div>
-      
-      {/* Floating Elements */}
-      <div className="absolute top-20 left-10 w-20 h-20 bg-yellow-300 rounded-full opacity-20 animate-bounce" style={{ animationDelay: '0s' }}></div>
-      <div className="absolute bottom-20 right-10 w-16 h-16 bg-orange-300 rounded-full opacity-20 animate-bounce" style={{ animationDelay: '1s' }}></div>
-      <div className="absolute top-1/2 left-20 w-12 h-12 bg-red-300 rounded-full opacity-20 animate-bounce" style={{ animationDelay: '2s' }}></div>
+
+      {/* ================= FLOATING DECOR ================= */}
+      <div className="hidden lg:block absolute bottom-20 left-20 animate-bounce" style={{ animationDuration: '4s' }}>
+        <div className="w-4 h-4 rounded-full bg-pink-400/30 blur-sm" />
+      </div>
+      <div className="hidden lg:block absolute top-[30%] right-[15%] animate-pulse">
+        <div className="w-3 h-3 rounded-full bg-rose-400/40 blur-sm" />
+      </div>
     </div>
   );
 }
